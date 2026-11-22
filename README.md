@@ -115,6 +115,42 @@ and keeps the engine unreachable from the outside world.
 - Thinking: by default reasoning goes to `reasoning_content`; send
   `chat_template_kwargs: {"enable_thinking": false}` for a clean `content`.
 
+## Alternative client: Claude Code
+
+```text
++------------+  Anthropic /v1/messages  +-------------------------+
+| claude CLI |------------------------->| claude-code-proxy :3456 |
++------------+                          +------------+------------+
+                                                     | OpenAI
+             +----------+    +--------------------+  | /v1/chat/completions
+             | RTX 5090 |<---| ingine-serve :8004 |<-+
+             +----------+    +--------------------+
+```
+
+1. Clone https://github.com/1rgs/claude-code-proxy.git into `ccp`, copy
+   `claude-code-proxy.env` to `ccp/.env`, and run `bash start_claude_proxy.sh`
+   (both files are in this repo; the script applies a 2-line patch that maps
+   Claude Code's default `opus` model name to the local model -- upstream maps
+   only `haiku`/`sonnet`).
+2. Set `ANTHROPIC_BASE_URL=http://127.0.0.1:3456`,
+   `ANTHROPIC_AUTH_TOKEN=sk-local`, and
+   `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1` (no Anthropic API key needed).
+
+```text
++============================================================================+
+| CLAUDE CODE :: end-to-end via proxy on RTX 5090 (2026-11-22)               |
++----------------------------------------------------------------------------+
+| exact-reply prompt                                             | 1.3 s     |
+| agentic tool task (create hello.py, run it, report the output) | 2.0 s     |
++============================================================================+
+```
+
+- Under `root`, Claude Code refuses `--dangerously-skip-permissions` -- use
+  `--allowedTools "Bash Read Write Edit"` instead.
+- The model thinks by default (reasoning goes to `reasoning_content`), so
+  budget `max_tokens` accordingly.
+- Every model name (`opus`/`sonnet`/`haiku`) resolves to the local model.
+
 ## Caveats
 
 - Kernels are built for `sm_120a`: Blackwell compute capability 12.0 only
