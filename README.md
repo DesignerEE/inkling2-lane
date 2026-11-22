@@ -4,10 +4,10 @@
 |  | || \| || |/ /| |   | || \| | / __||_  )    | |    /_\  | \| || __|      |
 |  | || .` || ' < | |__ | || .` || (_ | / / --- | |__ / _ \ | .` || _|       |
 |  |_||_|\_||_|\_\|____||_||_|\_| \___|/___|    |____/_/ \_\|_|\_||___|      |
-+=== inkling2-lane :: Inkling 2 Mini (abliterated) on 1x RTX 5090 32 GB =====+
++=== inkling2-lane :: Inkling 2 Mini on 1x RTX 5090 32 GB ===================+
 ```
 
-A production recipe for serving **Inkling 2 Mini (abliterated)** on a single
+A production recipe for serving **Inkling 2 Mini** on a single
 **RTX 5090 32 GB** and wiring it into **Kimi Code** (provider `inkling-lane`,
 or any OpenAI-compatible client) -- exactly as we run it, verified 2026-11-22.
 This repository contains the **deployment layer only** (launcher, LAN allowlist
@@ -48,7 +48,8 @@ and keeps the engine unreachable from the outside world.
 ## Quick start
 
 1. Install the engine and download the weights with the upstream installer
-   (`bash setup.sh` -> option 1). The model lands in `~/inkling-abliterated-ingine`.
+   (`bash setup.sh` -> option 1). The model lands in the installer's model
+   directory (see the installer output).
 2. Start the lane:
 
    ```bash
@@ -119,8 +120,6 @@ and keeps the engine unreachable from the outside world.
 - Kernels are built for `sm_120a`: Blackwell compute capability 12.0 only
   (RTX 5090 validated; PRO 6000/5000/4500 are untested upstream).
 - One stream per GPU: 2 concurrent requests OK, 6 -> 5 served + one HTTP 503.
-- Pass the ablation sidecar explicitly (`--ablation ...`); without it the
-  engine serves the unabliterated original.
 - Upstream terms apply to the engine and the weights -- see their repositories.
 
 ## License

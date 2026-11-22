@@ -11,4 +11,4 @@ provider = "inkling-lane"
 model = "inkling-2-mini-abliterated"
 max_context_size = 262144
 capabilities = [ "tool_use" ]
-display_name = "Inkling 2 Mini abliterated via ingine, DSpark thr 0.8 (5090 lane, 256K)"
+display_name = "Inkling 2 Mini via ingine, DSpark thr 0.8 (5090 lane, 256K)"
