@@ -142,6 +142,15 @@ and keeps the engine unreachable from the outside world.
 +----------------------------------------------------------------------------+
 | exact-reply prompt                                             | 1.3 s     |
 | agentic tool task (create hello.py, run it, report the output) | 2.0 s     |
++----------------------------------------------------------------------------+
+| workload  | ttft | api  | out tok | t/s | notes                          |
+| code      | 1.1s | 5.3s |    1087 | 204 | 9 agentic turns (code+tests)   |
+| prose 30w | 1.4s | 5.8s |     547 |  94 | 300-word essay                 |
+| copy      | 0.4s | 0.4s |      68 | 197 | verbatim echo                  |
+| tool rnd  | 1.1s | 2.2s |      61 |  -- | 5 turns, create+run file       |
++----------------------------------------------------------------------------+
+| t/s = result-text tokens / api seconds; thinking tokens are not counted   |
+| by the proxy stream, so these are lower bounds of the true decode rate.   |
 +============================================================================+
 ```
 
