@@ -100,6 +100,8 @@ and keeps the engine unreachable from the outside world.
   default loopback only). Streams pass through unchanged, so SSE works.
 - `config-snippet.toml` -- the Kimi Code provider (`inkling-lane`) + model block.
 - `bench_ingine_5090.py` -- the acceptance bench (`plain` / `spec` / `queue`).
+- `results/` -- archived bench output: the receipts behind the measured numbers.
+- `UPSTREAM.md` -- pinned upstream revisions and toolchain for the verified run.
 
 ## Quick start
 
@@ -145,6 +147,9 @@ and keeps the engine unreachable from the outside world.
 ```
 
 ## Measured on RTX 5090 32 GB (2026-11-22)
+
+Raw bench output behind these numbers: [`results/`](results/).
+Pinned upstream revisions for the verified run: [`UPSTREAM.md`](UPSTREAM.md).
 
 ```text
 +============================================================================+
