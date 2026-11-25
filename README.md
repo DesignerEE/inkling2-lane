@@ -7,12 +7,68 @@
 +=== inkling2-lane :: Inkling 2 Mini on 1x RTX 5090 32 GB ===================+
 ```
 
-A production recipe for serving **Inkling 2 Mini** on a single
-**RTX 5090 32 GB** and wiring it into **Kimi Code** (provider `inkling-lane`,
-or any OpenAI-compatible client) -- exactly as we run it, verified 2026-11-22.
+**A production lane for local agentic coding: Inkling 2 Mini on 1x RTX 5090 32 GB.**
+
+Serve a 26.4B-parameter coding model from one GPU on your desk, wire it into
+**Kimi Code** or **Claude Code**, and keep every token inside your LAN.
+No cloud in the path, no per-token bill, and the engine never touches the
+network. Measured on 2026-11-22:
+
+```text
++============================================================================+
+| ONE GPU, ONE LAN :: measured 2026-11-22                                    |
++----------------------------------------------------------------------------+
+| decode   320.9-322.1 tok/s plain      384.2-645.8 tok/s with DSpark        |
+| prefill  8551 tok/s                   needle found at 142K context         |
+| VRAM     23.8 / 32 GB at start        2.0 s agentic task (Claude Code)     |
+| control  deterministic by seed        256K context in the client config    |
++============================================================================+
+```
+
+[Watch the 2-minute demo](https://github.com/DesignerEE/inkling2-lane/releases/download/v1.0/inkling2-demo-v01.mp4)
+to see the lane, the relay, and the numbers above in motion.
+
 This repository contains the **deployment layer only** (launcher, LAN allowlist
 relay, client config block, acceptance bench); the engine and weights are
 third-party and are **not** included here.
+
+## Why this matters
+
+- **Agentic coding without the cloud.** Kimi Code and Claude Code run against
+  this lane end to end. A measured agentic tool task (create a file, run it,
+  report the output) finishes in 2.0 seconds, entirely on your own hardware.
+- **Zero marginal cost per token.** After the GPU, every token is free. For
+  agent loops that burn thousands of tokens per task, that changes the economics
+  of how often you can afford to let an agent work.
+- **Safe by default.** The engine listens on loopback only. The allowlist relay
+  is the single network-facing piece: it accepts TCP only from the networks you
+  list, drops everyone else, and logs each denial. The pattern works for any
+  OpenAI-compatible stack, not just this engine.
+- **A recipe, not just code.** Launcher, relay, client configs, and an
+  acceptance bench that measures the lane instead of trusting a README. Every
+  number above comes from that bench.
+
+## Who this is for
+
+- Teams and homelabs that want an OpenAI-compatible coding endpoint without
+  sending the codebase to an external API.
+- Builders wiring agents (Kimi Code, Claude Code, custom OpenAI clients) to
+  local hardware over a LAN.
+- Anyone with Blackwell hardware who wants a measured, reproducible starting
+  point instead of a weekend of flags.
+
+## How it compares
+
+- **Cloud coding APIs.** They buy frontier-model quality; this lane buys data
+  locality and a zero token bill on hardware you already own. The model is
+  26.4B total / 3.4B active: fast and capable for everyday agentic work, not a
+  frontier-reasoning replacement.
+- **Rolling your own server.** This checkpoint is published in ingine's
+  NVFP4/MXFP8 format for its runtime, so llama.cpp or vLLM do not pick it up as
+  a generic model file. This repo is the production layer around that stack:
+  launch flags, LAN exposure control, client configs, and an acceptance bench.
+- **Other local engines.** ingine ships sm_120a kernels for this model class.
+  The recipe pins exactly what to run, and the bench shows what it measures.
 
 ## Architecture & why a relay
 
