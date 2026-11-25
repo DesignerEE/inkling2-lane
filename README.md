@@ -7,6 +7,8 @@
 +=== inkling2-lane :: Inkling 2 Mini on 1x RTX 5090 32 GB ===================+
 ```
 
+[![test](https://github.com/DesignerEE/inkling2-lane/actions/workflows/test.yml/badge.svg)](https://github.com/DesignerEE/inkling2-lane/actions/workflows/test.yml)
+
 **A production lane for local agentic coding: Inkling 2 Mini on 1x RTX 5090 32 GB.**
 
 Serve a 26.4B-parameter coding model from one GPU on your desk, wire it into
@@ -102,6 +104,10 @@ and keeps the engine unreachable from the outside world.
 - `bench_ingine_5090.py` -- the acceptance bench (`plain` / `spec` / `queue`).
 - `results/` -- archived bench output: the receipts behind the measured numbers.
 - `UPSTREAM.md` -- pinned upstream revisions and toolchain for the verified run.
+- `smoke_test.py` -- one-command lane check: health, one real completion,
+  optional deny-path check (`--expect-deny`, run from outside `ALLOW_NETS`).
+- `tests/` -- stdlib-only relay tests (allow, DENY, SSE passthrough,
+  fail-closed); run in CI on every push.
 
 ## Quick start
 
@@ -116,7 +122,8 @@ and keeps the engine unreachable from the outside world.
 
    `INGINE_GPU` selects the card (index or `GPU-<uuid>`; default `0`). The
    engine binds loopback only; the relay exposes it to the networks you list.
-3. Sanity-check: `python3 bench_ingine_5090.py spec`.
+3. Sanity-check the lane: `python3 smoke_test.py` (health + one real
+   completion), then measure it: `python3 bench_ingine_5090.py spec`.
 4. Merge `config-snippet.toml` into `~/.kimi-code/config.toml`, point
    `base_url` at your box, reload the client.
 
