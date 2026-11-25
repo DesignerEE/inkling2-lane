@@ -61,6 +61,11 @@ third-party and are **not** included here.
 
 ## How it compares
 
+- **Against the intelligence indices.** Artificial Analysis Intelligence
+  Index v5.0.1: **20.1** — an exact tie with the dense Qwen3.8-27B, at 3.4B
+  active parameters and ~6x lower cost / ~4x faster per index task. Full
+  comparative scorecard (index standings, cost per task, where it trails, and
+  sources): [`INTELLIGENCE.md`](INTELLIGENCE.md).
 - **Cloud coding APIs.** They buy frontier-model quality; this lane buys data
   locality and a zero token bill on hardware you already own. The model is
   26.4B total / 3.4B active: fast and capable for everyday agentic work, not a
