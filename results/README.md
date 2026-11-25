@@ -23,6 +23,13 @@ python3 bench_ingine_5090.py spec    # writes ~/ingine-accept-spec.json
 
 Notes:
 
+- `plain` vs `spec` is an **engine startup flag**, not a bench switch: `spec`
+  numbers require `ingine-serve` started with `--spec --spec-threshold 0.8`
+  (as `start_ingine.sh` does); `plain` numbers require starting the engine
+  without those flags. The bench mode argument only names the output file.
+  Re-run on 2026-11-25 against a `--spec` engine measured
+  code 545.9 / prose 387.3 / copy 652.9 tok/s medians (vs 540.8 / 384.2 /
+  645.8 on 2026-11-22) — the spec numbers reproduce.
 - `queue` mode (concurrency behavior: 2 concurrent OK, 6 -> 5 served + one
   HTTP 503) prints to stdout and does not write a JSON archive; that claim is
   recorded in the README narrative only.

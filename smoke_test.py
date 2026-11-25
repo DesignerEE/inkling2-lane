@@ -30,6 +30,8 @@ def build_payload(model, max_tokens=8):
         "stream": False,
         "temperature": 0,
         "max_tokens": max_tokens,
+        # default sends reasoning to reasoning_content; ask for a clean content
+        "chat_template_kwargs": {"enable_thinking": False},
         "messages": [{"role": "user", "content": "Reply with the single word: ready"}],
     }).encode()
 
@@ -86,6 +88,7 @@ def check_expect_deny(host, port, timeout=5):
 def selftest():
     p = json.loads(build_payload(MODEL))
     assert p["model"] == MODEL and p["temperature"] == 0 and p["stream"] is False
+    assert p["chat_template_kwargs"] == {"enable_thinking": False}
     assert p["messages"][0]["role"] == "user"
     assert build_url("127.0.0.1", 8003, "/health") == "http://127.0.0.1:8003/health"
     assert build_url("192.168.1.50", 8003, "/v1/chat/completions").endswith("/v1/chat/completions")
